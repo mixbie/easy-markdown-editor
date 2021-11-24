@@ -2356,7 +2356,7 @@ EasyMDE.prototype.uploadImage = function (file, onSuccess, onError) {
     }
 
     var formData = new FormData();
-    formData.append('image', file);
+    formData.append('images', file);
 
     // insert CSRF token if provided in config.
     if (self.options.imageCSRFToken) {
@@ -2379,8 +2379,8 @@ EasyMDE.prototype.uploadImage = function (file, onSuccess, onError) {
             onErrorSup(fillErrorMessage(self.options.errorMessages.importError));
             return;
         }
-        if (this.status === 200 && response && !response.error && response.data && response.data.filePath) {
-            onSuccess((self.options.imagePathAbsolute ? '' : (window.location.origin + '/')) + response.data.filePath);
+        if (this.status === 200 && response && !response.error && response.images && response.images[0].url) {
+            onSuccess(response.images[0].url);
         } else {
             if (response.error && response.error in self.options.errorMessages) {  // preformatted error message
                 onErrorSup(fillErrorMessage(self.options.errorMessages[response.error]));
